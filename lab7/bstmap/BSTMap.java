@@ -2,116 +2,127 @@ package bstmap;
 
 import java.util.Iterator;
 import java.util.Set;
-import java.util.Spliterator;
-import java.util.function.Consumer;
 
-public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V>{
+public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
     private Node root;
 
-    @Override
-    public Iterator<K> iterator() {
+    private int size;
+
+    private class Node {
+        private K key;
+        private V value;
+        private Node left, right;
+
+        public Node(K key, V value) {
+            this.key = key;
+            this.value = value;
+        }
+    };
+
+    public BSTMap() {
+        this.size = 0;
+    }
+
+    private Node clear(Node node) {
+        if (node == null) {
+            return null;
+        }
+        node.left = clear(node.left);
+        node.right = clear(node.right);
         return null;
     }
 
-    private class Node{
-        private K key;
-        private V value;
-        private Node l, r;
-        private int size;
-
-        public Node(K key, V value, int size){
-            this.key = key;
-            this.value = value;
-            this.size = size;
-        }
+    @Override
+    public void clear() {
+        root = clear(root);
+        this.size = 0;
     }
 
-    public void clear(){
-        root = null;
-    }
-
-    public int size(){
-        return size(root);
-    }
-
-    private int size(Node n){
-        if(n == null) return 0;
-        else return n.size;
-    }
-
+    @Override
     public boolean containsKey(K key) {
-        return containsKey(root, key);
+        if (key == null) {
+            throw new IllegalArgumentException("calls containsKey() with a null key");
+        }
+        return get(root, key) != null;
     }
 
-    private boolean containsKey(Node node, K key) {
+    private Node get(Node node, K key) {
         if (node == null) {
-            return false;
+            return null;
         }
         int cmp = key.compareTo(node.key);
         if (cmp < 0) {
-            return containsKey(node.l, key);
+            return get(node.left, key);
         } else if (cmp > 0) {
-            return containsKey(node.r, key);
+            return get(node.right, key);
+        } else {
+            return node;
         }
-        return true;
     }
 
-    public V get(K key){
-        return get(root, key);
-    }
-
-    private V get(Node x, K key){
-        if(key == null) return null;
-        if(x == null) return null;
-        int cmp = key.compareTo(x.key);
-        if(cmp > 0){
-            return get(x.r, key);
-        }else if(cmp <0){
-            return get(x.l, key);
+    @Override
+    public V get(K key) {
+        if (key == null) {
+            throw new IllegalArgumentException("calls get() with a null key");
         }
-        return x.value;
-
+        Node node = get(root, key);
+        if (node == null) {
+            return null;
+        } else {
+            return node.value;
+        }
     }
 
+    @Override
+    public int size() {
+        return this.size;
+    }
+
+    private Node put(Node node, K key, V value) {
+        if (node == null) {
+            this.size += 1;
+            return new Node(key, value);
+        }
+        int cmp = key.compareTo(node.key);
+        if (cmp < 0) {
+            node.left = put(node.left, key, value);
+        } else if (cmp > 0) {
+            node.right = put(node.right, key, value);
+        } else {
+            node.value = value;
+        }
+        return node;
+    }
+
+    @Override
     public void put(K key, V value) {
-        if (value == null) {
-            return;
+        if (key == null) {
+            throw new IllegalArgumentException("calls put() with a null key");
         }
         root = put(root, key, value);
     }
-    private Node put(Node x, K key, V value){
-        if(x == null) return new Node(key, value, 1);
-        int cmp = key.compareTo(x.key);
-        if(cmp > 0){
-            put(x.r, key, value);
-        }else if(cmp <0){
-            put(x.l, key, value);
-        }else{
-            x.size = 1 + size(x.l)+size(x.r);
-        }
-        return x;
+
+    @Override
+    public Set<K> keySet() {
+        throw new UnsupportedOperationException();
     }
 
-    public Set<K> keySet(){
-        throw new UnsupportedOperationException("argument to contains() is null");
+    @Override
+    public V remove(K key) {
+        throw new UnsupportedOperationException();
     }
 
-    public V remove(K key){
-        throw new UnsupportedOperationException("argument to contains() is null");
+    @Override
+    public V remove(K key, V value) {
+        throw new UnsupportedOperationException();
     }
 
-    public V remove(K key, V value){
-        throw new UnsupportedOperationException("argument to contains() is null");
+    @Override
+    public Iterator<K> iterator() {
+        throw new UnsupportedOperationException();
     }
-    public void printInOrder(){
-        printInOrder(root);
-    }
-    private void printInOrder(Node node) {
-        if (node == null) {
-            return;
-        }
-        printInOrder(node.l);
-        System.out.println(node.key.toString() + " -> " + node.value.toString());
-        printInOrder(node.r);
+
+    public void printInOrder() {
+
     }
 }
