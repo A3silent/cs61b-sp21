@@ -14,12 +14,12 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V>{
     }
 
     @Override
-    public void forEach(Consumer<? super K> action) {
+    private void forEach(Consumer<? super K> action) {
         Map61B.super.forEach(action);
     }
 
     @Override
-    public Spliterator<K> spliterator() {
+    private Spliterator<K> spliterator() {
         return Map61B.super.spliterator();
     }
 
@@ -43,15 +43,27 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V>{
     public int size(){
         return size(root);
     }
-
-    public int size(Node n){
+    
+    private int size(Node n){
         if(n == null) return 0;
         else return n.size;
     }
 
-    public boolean containsKey(K key){
-        if (key == null) return false;
-        return get(key) != null;
+    public boolean containsKey(K key) {
+        return containsKey(root, key);
+    }
+
+    private boolean containsKey(Node node, K key) {
+        if (node == null) {
+            return false;
+        }
+        int cmp = key.compareTo(node.key);
+        if (cmp < 0) {
+            return containsKey(node.l, key);
+        } else if (cmp > 0) {
+            return containsKey(node.r, key);
+        }
+        return true;
     }
 
     public V get(K key){
@@ -77,7 +89,7 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V>{
         }
         root = put(root, key, value);
     }
-    public Node put(Node x, K key, V value){
+    private Node put(Node x, K key, V value){
         if(x == null) return new Node(key, value, 1);
         int cmp = key.compareTo(x.key);
         if(cmp > 0){
@@ -102,7 +114,7 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V>{
         throw new UnsupportedOperationException("argument to contains() is null");
     }
 
-    private void printInOrder(Node node) {
+    public void printInOrder(Node node) {
         if (node == null) {
             return;
         }
