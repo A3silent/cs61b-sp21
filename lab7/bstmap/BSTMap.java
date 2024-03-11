@@ -50,7 +50,7 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V>{
     }
 
     public boolean containsKey(K key){
-        if (key == null) throw new IllegalArgumentException("argument to contains() is null");
+        if (key == null) return false;
         return get(key) != null;
     }
 
@@ -59,7 +59,7 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V>{
     }
 
     private V get(Node x, K key){
-        if(key == null) throw new IllegalArgumentException("argument to contains() is null");
+        if(key == null) return null;
         if(x == null) return null;
         int cmp = key.compareTo(x.key);
         if(cmp > 0){
@@ -72,7 +72,6 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V>{
     }
 
     public void put(K key, V value) {
-        if (key == null) throw new IllegalArgumentException("argument to contains() is null");
         if (value == null) {
             return;
         }
