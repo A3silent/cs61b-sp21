@@ -68,9 +68,9 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V>{
             return get(x.r, key);
         }else if(cmp <0){
             return get(x.l, key);
-        }else{
-            return x.value;
         }
+        return x.value;
+
     }
 
     public void put(K key, V value) {
@@ -103,8 +103,10 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V>{
     public V remove(K key, V value){
         throw new UnsupportedOperationException("argument to contains() is null");
     }
-
-    public void printInOrder(Node node) {
+    public void printInOrder(){
+        printInOrder(root);
+    }
+    private void printInOrder(Node node) {
         if (node == null) {
             return;
         }
