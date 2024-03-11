@@ -13,16 +13,6 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V>{
         return null;
     }
 
-    @Override
-    private void forEach(Consumer<? super K> action) {
-        Map61B.super.forEach(action);
-    }
-
-    @Override
-    private Spliterator<K> spliterator() {
-        return Map61B.super.spliterator();
-    }
-
     private class Node{
         private K key;
         private V value;
@@ -43,7 +33,7 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V>{
     public int size(){
         return size(root);
     }
-    
+
     private int size(Node n){
         if(n == null) return 0;
         else return n.size;
