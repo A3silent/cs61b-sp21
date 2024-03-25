@@ -123,7 +123,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
         return getNode(key) != null;
     }
 
-    public Node getNode(K key){
+    private Node getNode(K key){
         if(key == null){
             throw new IllegalArgumentException("Key can't be null");
         }
